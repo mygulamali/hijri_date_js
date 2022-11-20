@@ -1,0 +1,16 @@
+{
+  "name": "@mygulamali/hijri_date",
+  "version": "0.0.1",
+  "description": "NodeJS module to encapsulate Hijri date.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mygulamali/hijri_date_js.git"
+  },
+  "author": "Murtaza Gulamali <murtaza@gulamali.net>",
+  "license": "MIT",
+  "homepage": "https://github.com/mygulamali/hijri_date_js#readme"
+}
