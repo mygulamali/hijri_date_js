@@ -4,7 +4,7 @@
   "description": "NodeJS module to encapsulate Hijri date.",
   "main": "index.js",
   "scripts": {
-    "lint": "standard --fix",
+    "lint": "standard --env jest --fix",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest --passWithNoTests"
   },
   "repository": {
