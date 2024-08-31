@@ -1,55 +1,6 @@
+import { CONSTANTS } from './hijri_date.constants'
+
 export default class HijriDate {
-  // Hijri year remainders for determining Kabisa years
-  static KABISA_YEAR_REMAINDERS = [2, 5, 8, 10, 13, 16, 19, 21, 24, 27, 29]
-
-  // number of days in a Hijri year per month
-  static DAYS_IN_YEAR = [30, 59, 89, 118, 148, 177, 207, 236, 266, 295, 325]
-
-  // number of days in 30-years per Hijri year
-  /* eslint-disable indent, no-multi-spaces */
-    static DAYS_IN_30_YEARS = [
-         354,  708, 1063, 1417, 1771, 2126, 2480, 2834,  3189,  3543,
-        3898, 4252, 4606, 4961, 5315, 5669, 6024, 6378,  6732,  7087,
-        7441, 7796, 8150, 8504, 8859, 9213, 9567, 9922, 10276, 10631
-    ]
-    /* eslint-enable */
-
-  // month names
-  static MONTH_NAMES = {
-    long: {
-      en: [
-        'Moharram al-Haraam',
-        'Safar al-Muzaffar',
-        'Rabi al-Awwal',
-        'Rabi al-Aakhar',
-        'Jumada al-Ula',
-        'Jumada al-Ukhra',
-        'Rajab al-Asab',
-        'Shabaan al-Karim',
-        'Ramadaan al-Moazzam',
-        'Shawwal al-Mukarram',
-        'Zilqadah al-Haraam',
-        'Zilhaj al-Haraam'
-      ]
-    },
-    short: {
-      en: [
-        'Moharram',
-        'Safar',
-        'Rabi I',
-        'Rabi II',
-        'Jumada I',
-        'Jumada II',
-        'Rajab',
-        'Shabaan',
-        'Ramadaan',
-        'Shawwal',
-        'Zilqadah',
-        'Zilhaj'
-      ]
-    }
-  }
-
   constructor (year, month, day) {
     this.year = year
     this.month = month
@@ -69,11 +20,11 @@ export default class HijriDate {
   }
 
   static getMonthName (month) {
-    return HijriDate.MONTH_NAMES.long.en[month]
+    return CONSTANTS.MONTH_NAMES.long.en[month]
   }
 
   static getShortMonthName (month) {
-    return HijriDate.MONTH_NAMES.short.en[month]
+    return CONSTANTS.MONTH_NAMES.short.en[month]
   }
 
   // is the specified Gregorian Date object a Julian date?
@@ -148,8 +99,8 @@ export default class HijriDate {
 
   // is the specified Hijri year a Kabisa year?
   static isKabisa (year) {
-    for (const i in HijriDate.KABISA_YEAR_REMAINDERS) {
-      if (year % 30 === HijriDate.KABISA_YEAR_REMAINDERS[i]) {
+    for (const i in CONSTANTS.KABISA_YEAR_REMAINDERS) {
+      if (year % 30 === CONSTANTS.KABISA_YEAR_REMAINDERS[i]) {
         return true
       }
     }
@@ -164,7 +115,7 @@ export default class HijriDate {
 
   // return day of Hijri year corresponding to this Hijri Date object
   dayOfYear () {
-    return (this.month === 0) ? this.day : (HijriDate.DAYS_IN_YEAR[this.month - 1] + this.day)
+    return (this.month === 0) ? this.day : (CONSTANTS.DAYS_IN_YEAR[this.month - 1] + this.day)
   };
 
   // return Hijri Date object corresponding to specified Astronomical Julian Date
@@ -175,20 +126,20 @@ export default class HijriDate {
     const y30 = Math.floor(left / 10631.0)
 
     left -= y30 * 10631
-    while (left > HijriDate.DAYS_IN_30_YEARS[i]) {
+    while (left > CONSTANTS.DAYS_IN_30_YEARS[i]) {
       i += 1
     }
 
     const year = Math.round(y30 * 30.0 + i)
     if (i > 0) {
-      left -= HijriDate.DAYS_IN_30_YEARS[i - 1]
+      left -= CONSTANTS.DAYS_IN_30_YEARS[i - 1]
     }
     i = 0
-    while (left > HijriDate.DAYS_IN_YEAR[i]) {
+    while (left > CONSTANTS.DAYS_IN_YEAR[i]) {
       i += 1
     }
     const month = Math.round(i)
-    const date = (i > 0) ? Math.round(left - HijriDate.DAYS_IN_YEAR[i - 1]) : Math.round(left)
+    const date = (i > 0) ? Math.round(left - CONSTANTS.DAYS_IN_YEAR[i - 1]) : Math.round(left)
 
     return new HijriDate(year, month, date)
   };
@@ -199,7 +150,7 @@ export default class HijriDate {
 
     let ajd = 1948083.5 + y30 * 10631 + this.dayOfYear()
     if (this.year % 30 !== 0) {
-      ajd += HijriDate.DAYS_IN_30_YEARS[this.year - y30 * 30 - 1]
+      ajd += CONSTANTS.DAYS_IN_30_YEARS[this.year - y30 * 30 - 1]
     }
 
     return ajd
