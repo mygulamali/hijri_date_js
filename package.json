@@ -4,6 +4,7 @@
   "description": "NodeJS module to encapsulate Hijri date.",
   "main": "index.js",
   "scripts": {
+    "docs": "jsdoc -d docs -P ./package.json -R ./README.md src",
     "lint": "standard --env jest --fix",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest"
   },
@@ -16,10 +17,14 @@
   "homepage": "https://github.com/mygulamali/hijri_date_js#readme",
   "devDependencies": {
     "jest": "^29.7.0",
+    "jsdoc": "^4.0.3",
     "standard": "^17.1.0"
   },
   "type": "module",
   "jest": {
     "transform": {}
+  },
+  "standard": {
+    "ignore": ["docs/"]
   }
 }
