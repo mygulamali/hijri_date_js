@@ -1,33 +1,66 @@
 import { CONSTANTS } from './hijri_date.constants'
 
+/** Class representing a Hijri date. */
 export default class HijriDate {
+  /**
+   * Create a HijriDate object for a specific Hijri date.
+   * @param {int} year - A Hijri year
+   * @param {int} month - A Hijri month (zero indexed ie. Moharram = 0).
+   * @param {int} day - A Hijri day of the month
+   */
   constructor (year, month, day) {
     this.year = year
     this.month = month
     this.day = day
   }
 
+  /**
+   * Get the Hijri year.
+   * @return {int} The Hijri year.
+   */
   get getFullYear () {
     return this.year
   }
 
+  /**
+   * Get the Hijri month.
+   * @return {int} The Hijri month (zero indexed ie. Moharram = 0).
+   */
   get getMonth () {
     return this.month
   }
 
+  /**
+   * Get the Hijri day.
+   * @return {int} The Hijri day of the month.
+   */
   get getDate () {
     return this.day
   }
 
+  /**
+   * Get the name of the specified Hijri month.
+   * @param {int} month - A Hijri month (zero indexed ie. Moharram = 0).
+   * @returns {string} The name of the Hijri month in UK English.
+   */
   static getMonthName (month) {
     return CONSTANTS.MONTH_NAMES.long.en[month]
   }
 
+  /**
+   * Get the short name of the specified Hijri month.
+   * @param {int} month - A Hijri month (zero indexed ie. Moharram = 0).
+   * @returns {string} The short name of the Hijri month in UK English.
+   */
   static getShortMonthName (month) {
     return CONSTANTS.MONTH_NAMES.short.en[month]
   }
 
-  // is the specified Gregorian Date object a Julian date?
+  /**
+   * Determine if the specified Gregorian date is a Julian date.
+   * @param {Date} date - A Gregorian date object.
+   * @returns {boolean} The date is a Julian date.
+   */
   static isJulian (date) {
     if (date.getFullYear() < 1582) {
       return true
@@ -43,7 +76,11 @@ export default class HijriDate {
     return false
   }
 
-  // return Astronomical Julian Date corresponding to the specified Gregorian Date object
+  /**
+   * Get the Astronomical Julian Date of the specified Gregorian date.
+   * @param {Date} date - A Gregorian date object.
+   * @returns {float} The Astronomical Julian Date.
+   */
   static gregorianToAJD (date) {
     let a; let b
     let year = date.getFullYear()
@@ -70,7 +107,11 @@ export default class HijriDate {
     return Math.floor(365.25 * (year + 4716)) + Math.floor(30.6001 * (month + 1)) + day + b - 1524.5
   };
 
-  // return Gregorian Date object corresponding to the specified Astronomical Julian Date
+  /**
+   * Get the Gregorian date for the specified Astronomical Julian Date.
+   * @param {float} ajd - An Astronomical Julian Date.
+   * @returns {Date} The Gregorian date.
+   */
   static ajdToGregorian (ajd) {
     const z = Math.floor(ajd + 0.5)
     const f = (ajd + 0.5 - z)
@@ -97,7 +138,11 @@ export default class HijriDate {
     return new Date(year, month, day, hrs, min, sec, msc)
   };
 
-  // is the specified Hijri year a Kabisa year?
+  /**
+   * Determine if the specified Hijri year is a Kabisa year.
+   * @param {int} year - A Hijri year.
+   * @returns {boolean} The year is a Kabisa year.
+   */
   static isKabisa (year) {
     for (const i in CONSTANTS.KABISA_YEAR_REMAINDERS) {
       if (year % 30 === CONSTANTS.KABISA_YEAR_REMAINDERS[i]) {
@@ -108,17 +153,29 @@ export default class HijriDate {
     return false
   };
 
-  // return number of days in the specified Hijri year and month
+  /**
+   * Get the number of days in the specified Hijri year and month.
+   * @param {int} year - A Hijri year.
+   * @param {int} month - A Hijri month (zero indexed ie. Moharram = 0).
+   * @returns {int} The number of days in the year and month.
+   */
   static daysInMonth (year, month) {
     return ((month === 11 && HijriDate.isKabisa(year)) || month % 2 === 0) ? 30 : 29
   };
 
-  // return day of Hijri year corresponding to this Hijri Date object
+  /**
+   * Get the day of the year corresponding to this HijriDate object.
+   * @returns {int} The day of the year.
+   */
   dayOfYear () {
     return (this.month === 0) ? this.day : (CONSTANTS.DAYS_IN_YEAR[this.month - 1] + this.day)
   };
 
-  // return Hijri Date object corresponding to specified Astronomical Julian Date
+  /**
+   * Get a Hijri date associated with the specified Astronomical Julian Date.
+   * @param {float} ajd - An Astronomical Julian Date.
+   * @returns {HijriDate} The Hijri date.
+   */
   static fromAJD (ajd) {
     let i = 0
     let left = Math.floor(ajd - 1948083.5)
@@ -144,7 +201,10 @@ export default class HijriDate {
     return new HijriDate(year, month, date)
   };
 
-  // return Astronomical Julian Date corresponding to this Hijri Date object
+  /**
+   * Get the Astronomical Julian Date associated with this HijriDate object.
+   * @returns {float} The Astronomical Julian Date.
+   */
   toAJD () {
     const y30 = Math.floor(this.year / 30.0)
 
@@ -156,12 +216,19 @@ export default class HijriDate {
     return ajd
   };
 
-  // return Hijri Date object corresponding to the specified Gregorian date object
+  /**
+   * Get the Hijri date corresponding to the specified Gregorian date.
+   * @param {Date} date - A Gregorian date.
+   * @returns {HijriDate} The Hijri date.
+   */
   static fromGregorian (date) {
     return HijriDate.fromAJD(HijriDate.gregorianToAJD(date))
   };
 
-  // return Gregorian date object corresponding to this Hijri Date object
+  /**
+   * Get the Gregorian date corresponding to this HijriDate object.
+   * @returns {Date} The Gregorian date.
+   */
   toGregorian () {
     return HijriDate.ajdToGregorian(this.toAJD())
   };
