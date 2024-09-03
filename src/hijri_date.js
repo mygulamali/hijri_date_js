@@ -1,7 +1,7 @@
 import { CONSTANTS } from './hijri_date.constants'
 
 /** Class representing a Hijri date. */
-export default class HijriDate {
+class HijriDate {
   /**
    * Create a HijriDate object for a specific Hijri date.
    * @param {int} year - A Hijri year
@@ -233,3 +233,5 @@ export default class HijriDate {
     return HijriDate.ajdToGregorian(this.toAJD())
   };
 };
+
+export default HijriDate
